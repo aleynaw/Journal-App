@@ -2,14 +2,25 @@
 //  Journal_AppApp.swift
 //  Journal App
 //
-//  Created by Aleyna Warner on 2024-10-17.
+//  Created by Aleyna Warner on 2024-10-01.
 //
 
 import SwiftUI
 import SwiftData
+import UIKit
+import AppAuth
 
 @main
 struct Journal_AppApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @StateObject private var authManager = AuthManager()
+    
+    init() {
+        NotificationManager.shared.requestAuthorization()
+        NotificationManager.shared.scheduleDailyNotifications() // Schedule notifications at specific times
+        UNUserNotificationCenter.current().delegate = NotificationDelegate.shared // Set the delegate
+    }
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
@@ -23,9 +34,22 @@ struct Journal_AppApp: App {
         }
     }()
 
+//    var body: some Scene {
+//            WindowGroup {
+//                ContentView()
+//                    .environmentObject(authManager) // still injected, but auth is always "true"
+//            }
+//            .modelContainer(sharedModelContainer)
+//        }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if authManager.authState == nil {
+                LoginView(authManager: authManager)
+            } else {
+                ContentView()
+                    .environmentObject(authManager)
+            }
         }
         .modelContainer(sharedModelContainer)
     }

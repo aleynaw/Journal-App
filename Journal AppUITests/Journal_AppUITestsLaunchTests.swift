@@ -2,7 +2,7 @@
 //  Journal_AppUITestsLaunchTests.swift
 //  Journal AppUITests
 //
-//  Created by Aleyna Warner on 2024-10-17.
+//  Created by Aleyna Warner on 2024-10-101.
 //
 
 import XCTest
