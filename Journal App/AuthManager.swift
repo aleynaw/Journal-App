@@ -16,7 +16,7 @@ class AuthManager: NSObject, ObservableObject {
     
     private let issuer = URL(string: "https://auth.globus.org")!
     private let clientID = "00ef6e5a-2874-4a00-aef3-cc8d1740c2f1"
-    private let redirectURI = URL(string: "https://mclabjournal.auth.globus.org/oauth2redirect")!
+    private let redirectURI = URL(string: "https://apple.node.rip/oauth-redirect")!
     private let collectionID = "cdd81df8-db63-4ea5-b017-031ba03f33ae"
 
     func authorize(from viewController: UIViewController) {
