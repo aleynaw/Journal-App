@@ -471,12 +471,12 @@ struct ContentView: View {
             }
         .onDisappear {
             NotificationCenter.default.removeObserver(self, name: Notification.Name("TriggerFollowUpQuestions"), object: nil)
-//            saveResponsesToFile()
+            saveResponsesToFileAndUpload(authManager: authManager, baseURL: "https://g-4e0411.88cee.8443.data.globus.org")
         }
         
         .onChange(of: scenePhase) { oldPhase, newPhase in
             if newPhase == .background {
-//                saveResponsesToFile()
+                saveResponsesToFileAndUpload(authManager: authManager, baseURL: "https://g-4e0411.88cee.8443.data.globus.org")
                 resetAppState() // Reset the app state when the app is minimized
             }
         }
@@ -485,7 +485,7 @@ struct ContentView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(ColorPalette.color1.ignoresSafeArea())
         .onDisappear {
-//            saveResponsesToFile() // Save to JSON when the view disappears (or when session ends)
+            saveResponsesToFileAndUpload(authManager: authManager, baseURL: "https://g-4e0411.88cee.8443.data.globus.org") // Save to JSON when the view disappears (or when session ends)
         }
     }
     
@@ -731,6 +731,7 @@ struct ContentView: View {
                 print("Saved responses to file: \(fileURL)")
 
                 // Get access token from AppAuth state
+                print("getting access token")
                 authManager.getAccessToken { token in
                     if let token = token {
                         GlobusUploader.upload(fileURL: fileURL, accessToken: token, baseURL: baseURL)

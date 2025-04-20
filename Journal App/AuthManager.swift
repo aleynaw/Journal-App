@@ -28,14 +28,14 @@ class AuthManager: NSObject, ObservableObject {
                 return
             }
 
-            let scope = "https://auth.globus.org/scopes/\(self.collectionID)/https"
-            print("Yaddahs")
+            let scope =  ["https://auth.globus.org/scopes/\(self.collectionID)/https"]
+            print("Scopes: ", scope)
 
             let request = OIDAuthorizationRequest(
                 configuration: config,
                 clientId: self.clientID,
                 clientSecret: nil,
-                scopes: ["openid", scope],
+                scopes: scope,
                 redirectURL: self.redirectURI,
                 responseType: OIDResponseTypeCode,
                 additionalParameters: ["access_type": "offline"]
