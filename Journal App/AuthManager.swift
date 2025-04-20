@@ -13,13 +13,15 @@ import UIKit
 
 class AuthManager: NSObject, ObservableObject {
     @Published var authState: OIDAuthState?
+    var currentAuthorizationFlow: OIDExternalUserAgentSession?
     
     private let issuer = URL(string: "https://auth.globus.org")!
     private let clientID = "00ef6e5a-2874-4a00-aef3-cc8d1740c2f1"
-    private let redirectURI = URL(string: "https://apple.node.rip/oauth-redirect")!
+    private let redirectURI = URL(string: "https://apple.node.rip/")!
     private let collectionID = "cdd81df8-db63-4ea5-b017-031ba03f33ae"
 
     func authorize(from viewController: UIViewController) {
+        print("YOOO")
         OIDAuthorizationService.discoverConfiguration(forIssuer: issuer) { config, error in
             guard let config = config else {
                 print("Error discovering config: \(error?.localizedDescription ?? "Unknown")")
@@ -27,6 +29,7 @@ class AuthManager: NSObject, ObservableObject {
             }
 
             let scope = "https://auth.globus.org/scopes/\(self.collectionID)/https"
+            print("Yaddahs")
 
             let request = OIDAuthorizationRequest(
                 configuration: config,
@@ -38,18 +41,36 @@ class AuthManager: NSObject, ObservableObject {
                 additionalParameters: ["access_type": "offline"]
             )
 
-            AppDelegate.currentAuthorizationFlow = OIDAuthState.authState(
+           
+            // Present the auth UI and capture the returned session
+            let authSession = OIDAuthState.authState(
                 byPresenting: request,
                 presenting: viewController
             ) { authState, error in
                 if let authState = authState {
                     self.authState = authState
-                    print("Got access token: \(authState.lastTokenResponse?.accessToken ?? "")")
+                    print("✅ Got access token:", authState.lastTokenResponse?.accessToken ?? "")
                 } else {
-                    print("Authorization error: \(error?.localizedDescription ?? "Unknown")")
+                    print("❌ Authorization error:", error?.localizedDescription ?? "Unknown")
                 }
+                print("BRUH")
             }
+            // Store it here for resume in onOpenURL
+            self.currentAuthorizationFlow = authSession
         }
+    }
+
+    func resumeAuthorizationFlow(with url: URL) {
+        guard let flow = currentAuthorizationFlow else {
+            print("⚠️ No in‑flight session to resume")
+            return
+          }
+          print("📲 Got redirect URL: \(url.absoluteString)")
+          let didResume = flow.resumeExternalUserAgentFlow(with: url)
+          print("🔁 resumeExternalUserAgentFlow returned \(didResume)")
+          if didResume {
+            currentAuthorizationFlow = nil
+          }
     }
 
     func getAccessToken(completion: @escaping (String?) -> Void) {

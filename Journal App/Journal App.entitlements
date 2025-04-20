@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:apple.node.rip</string>
+		<string>applinks:apple.node.rip?mode=developer</string>
 	</array>
 </dict>
 </plist>

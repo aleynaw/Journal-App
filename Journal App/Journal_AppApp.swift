@@ -44,13 +44,19 @@ struct Journal_AppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            if authManager.authState == nil {
-                LoginView(authManager: authManager)
-            } else {
-                ContentView()
-                    .environmentObject(authManager)
-            }
+            Group {
+                    if authManager.authState == nil {
+                      LoginView(authManager: authManager)
+                    } else {
+                      ContentView()
+                        .environmentObject(authManager)
+                    }
+                  }
+            .onOpenURL { url in
+                    print("📬 onOpenURL: \(url)")
+                    authManager.resumeAuthorizationFlow(with: url)
+                  }
         }
-        .modelContainer(sharedModelContainer)
+        //.modelContainer(sharedModelContainer)
     }
 }

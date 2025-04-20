@@ -12,13 +12,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>39</string>
+					<string>42</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>38</string>
+					<string>41</string>
 					<key>Timestamp</key>
-					<string>766639162.453105</string>
+					<string>766730770.687427</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -42,8 +42,8 @@
 </string>
 				<key>trailing</key>
 				<string>
-            AppDelegate.currentAuthorizationFlow = OIDAuthState.authState(
-                byPresenting: request,
+           
+            // Present the auth UI and capture the returned session
 </string>
 			</dict>
 			<key>type</key>
