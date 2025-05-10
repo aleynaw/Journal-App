@@ -7,8 +7,9 @@ struct GlobusUploader {
         fileURL: URL,
         accessToken: String,
         baseURL: String,
-        collectionPath: String = ""
     ) {
+        let pid = UserDefaults.standard.string(forKey: "participantID") ?? "unknown"
+        let collectionPath = "CognitionUnderTension/\(pid)/"
         let fileName = fileURL.lastPathComponent
         
         // 1) Trim or add slashes so we end up with:

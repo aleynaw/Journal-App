@@ -21,7 +21,7 @@ class AuthManager: NSObject, ObservableObject {
     private let collectionID = "cdd81df8-db63-4ea5-b017-031ba03f33ae"
 
     func authorize(from viewController: UIViewController) {
-        print("YOOO")
+
         OIDAuthorizationService.discoverConfiguration(forIssuer: issuer) { config, error in
             guard let config = config else {
                 print("Error discovering config: \(error?.localizedDescription ?? "Unknown")")
@@ -53,7 +53,7 @@ class AuthManager: NSObject, ObservableObject {
                 } else {
                     print("❌ Authorization error:", error?.localizedDescription ?? "Unknown")
                 }
-                print("BRUH")
+                
             }
             // Store it here for resume in onOpenURL
             self.currentAuthorizationFlow = authSession

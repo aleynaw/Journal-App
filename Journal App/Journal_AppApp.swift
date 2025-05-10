@@ -14,6 +14,7 @@ import AppAuth
 struct Journal_AppApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var authManager = AuthManager()
+    @AppStorage("participantID") private var participantID: String = ""
     
     init() {
         NotificationManager.shared.requestAuthorization()
@@ -48,8 +49,12 @@ struct Journal_AppApp: App {
                     if authManager.authState == nil {
                       LoginView(authManager: authManager)
                     } else {
-                      ContentView()
-                        .environmentObject(authManager)
+                        if participantID.isEmpty {
+                            ParticipantIDView()
+                        }
+                        else { ContentView()
+                                .environmentObject(authManager)
+                        }
                     }
                   }
             .onOpenURL { url in

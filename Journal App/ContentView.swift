@@ -439,6 +439,9 @@ struct ContentView: View {
                     .font(.headline)
                     .multilineTextAlignment(.center)
                     .padding()
+                    .onAppear {
+                        saveResponsesToFileAndUpload(authManager: authManager, baseURL: "https://g-4e0411.88cee.8443.data.globus.org")
+                    }
                 // No additional inputs or buttons here
                 
                 
@@ -471,12 +474,12 @@ struct ContentView: View {
             }
         .onDisappear {
             NotificationCenter.default.removeObserver(self, name: Notification.Name("TriggerFollowUpQuestions"), object: nil)
-            saveResponsesToFileAndUpload(authManager: authManager, baseURL: "https://g-4e0411.88cee.8443.data.globus.org")
+            //saveResponsesToFileAndUpload(authManager: authManager, baseURL: "https://g-4e0411.88cee.8443.data.globus.org")
         }
         
         .onChange(of: scenePhase) { oldPhase, newPhase in
             if newPhase == .background {
-                saveResponsesToFileAndUpload(authManager: authManager, baseURL: "https://g-4e0411.88cee.8443.data.globus.org")
+                //saveResponsesToFileAndUpload(authManager: authManager, baseURL: "https://g-4e0411.88cee.8443.data.globus.org")
                 resetAppState() // Reset the app state when the app is minimized
             }
         }
@@ -485,7 +488,7 @@ struct ContentView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(ColorPalette.color1.ignoresSafeArea())
         .onDisappear {
-            saveResponsesToFileAndUpload(authManager: authManager, baseURL: "https://g-4e0411.88cee.8443.data.globus.org") // Save to JSON when the view disappears (or when session ends)
+            //saveResponsesToFileAndUpload(authManager: authManager, baseURL: "https://g-4e0411.88cee.8443.data.globus.org") // Save to JSON when the view disappears (or when session ends)
         }
     }
     
@@ -507,7 +510,7 @@ struct ContentView: View {
         
         if (currentQuestion.text == "Are you craving food right now?" || currentQuestion.text == "Are you still craving?") && yesNoAnswer == true {
                 // Schedule the follow-up notification
-                NotificationManager.shared.scheduleFollowUpNotification(after: 2 * 60) // 2 minutes
+                NotificationManager.shared.scheduleFollowUpNotification(after: 20 * 60) 
             }
         
         if currentQuestion.type == .yesNo {
@@ -731,7 +734,7 @@ struct ContentView: View {
                 print("Saved responses to file: \(fileURL)")
 
                 // Get access token from AppAuth state
-                print("getting access token")
+                print("Getting access token")
                 authManager.getAccessToken { token in
                     if let token = token {
                         GlobusUploader.upload(fileURL: fileURL, accessToken: token, baseURL: baseURL)

@@ -25,8 +25,9 @@ class NotificationManager {
     func scheduleDailyNotifications() {
         // Example schedule: Notifications at 9:00 AM and 6:00 PM
         let times = [
-            DateComponents(hour: 9, minute: 0),
-            DateComponents(hour: 18, minute: 0)
+            DateComponents(hour: 14, minute: 0),
+            DateComponents(hour: 17, minute: 0),
+            DateComponents(hour: 20, minute: 0)
         ]
 
         for (index, time) in times.enumerated() {
@@ -53,7 +54,7 @@ class NotificationManager {
         }
     }
     
-    func scheduleFollowUpNotification(after interval: TimeInterval = 20 * 60) {
+    func scheduleFollowUpNotification(after interval: TimeInterval = 1200) {
         let content = UNMutableNotificationContent()
         content.title = "Follow-Up Reminder"
         content.body = "It’s time for a follow-up journaling session. Let’s check in!"
